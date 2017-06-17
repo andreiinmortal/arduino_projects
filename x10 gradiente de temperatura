@@ -1,0 +1,52 @@
+//#include <psc05.h>
+//#include <x10.h>
+//#include <x10constants.h>
+
+//ALARMA TECNICA: DETECTOR DE INCENDIOS TERMOVELOCIMETRICO CON NTC 10K
+//CONTROL DE ROCIADOR (SPRINKLER) EN DIRECCIONES X10 A5,C2,D2
+//GRADIENTESUPERIOR A 7C/min
+
+// 1/T=A+B*ln(R)+C*ln(R)elevado a 3
+//A=1.12924E-03
+//B=2.34108E-04
+//C=0.87755E-07
+//R=actual termistor resistance, in ohms
+
+//I=Vcc/8K2+R
+//Va2=(Vcc/8K2+R)*R
+//R=R(Va2,Vcc)
+//Va2*8200+Va2*R=Vcc*R
+//Va2*8200=R(Vcc-Va2)
+//R=(Va2*8200)/(Vcc-Va2)
+
+#define Vcc 5.0
+#define R1 8200
+#define a 1.12924E-3
+#define b 2.34108E-04
+#define c 0.87755E-07
+
+
+//x10 myHouse = x10(2, 4); //0,1,2,3 7(leonardo) todos(due)
+double va2, Rs, T, tantes, gradiente;
+void setup() {
+  Serial.begin(115200);
+}
+
+void loop() {
+  va2 = (Vcc / 1023) * analogRead(2);
+  Serial.print("V(A2)=");
+  Serial.print(va2, 3);
+  Serial.println(Rs);
+
+
+  //Steinhart Hart
+  T = 1 /(a + b * log(Rs) + c * pow(log(Rs), 3));
+  Serial.print("T= ");
+  Serial.println(T - 273.15, 1);
+  gradiente=(T-tantes)*6;
+  Serial.print("gradiente= ");
+  Serial.print(
+tantes=T;
+
+  delay(10000);
+}
